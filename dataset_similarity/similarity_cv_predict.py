@@ -9,7 +9,7 @@ import argparse
 import pickle
 import sys
 sys.path.append("../")
-import utils 
+import utils
 from conf import settings
 COPY_NUM = 10
 
@@ -49,10 +49,14 @@ if __name__ == '__main__':
     # mean and std for each intersection
     mean_std_dict = utils.get_intersection_mean_std_dict(args.dataset)
 
-    result_path = os.path.join(settings.RESULT_PATH, "dataset_similarity")
+    result_path = os.path.join(settings.RESULT_PATH, "dataset_similarity_cifar10")
     if not os.path.exists(result_path):
         os.mkdir(result_path)
-        
+
+    # 添加调试
+    print(mean_std_dict.keys())
+    print(inter_names)
+
     # Load models into model_dict
     all_model_dict = {}
     for model_type in model_type_list:
@@ -66,14 +70,14 @@ if __name__ == '__main__':
                 net = utils.get_network(args.dataset, model_type, False)
                 net.load_state_dict(
                     torch.load(
-                    os.path.join(file_path, model_type, intersection, 'model_{}.pth'.format(i)), 
+                    os.path.join(file_path, model_type, intersection, 'model_{}.pth'.format(i)),
                     map_location='cpu'))
                 net.to('cpu')
                 net.eval()
                 models_list.append(nn.Sequential(transforms.Normalize(mean, std), net))
             print("Initialized model {}/{}.".format(model_type, intersection))
 
-            
+
             with torch.no_grad():
                 model_predicts = []
                 for model in models_list:
@@ -82,8 +86,8 @@ if __name__ == '__main__':
                     del model
                     torch.cuda.empty_cache()
                 model_predict_on_neighrboods[intersection] = torch.stack(model_predicts).detach().cpu()
-                
-        pickle.dump(model_predict_on_neighrboods, 
+
+        pickle.dump(model_predict_on_neighrboods,
                 open(os.path.join(result_path, f"{args.dataset}_predict_{model_type}.pkl"), "wb"))
 
 

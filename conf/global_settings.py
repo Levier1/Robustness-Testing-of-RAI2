@@ -3,9 +3,28 @@ from datetime import datetime
 
 
 #directory to save data, results and weight files
-CHECKPOINT_PATH = 'checkpoint'
-DATA_PATH = 'data'
-RESULT_PATH = 'result'
+#rotation
+CHECKPOINT_PATH = '/home/featurize/work/RAI2project/RAI2checkpoint'
+DATA_PATH = '/home/featurize/work/RAI2project/RAI2data'
+RESULT_PATH = '/home/featurize/work/RAI2project/RAI2result'
+
+CHECKPOINT_PATH_TRANSLATE = '/home/featurize/work/RAI2project/RAI2checkpoint'
+DATA_PATH_TRANSLATE = '/home/featurize/work/RAI2project/RAI2data'
+RESULT_PATH_TRANSLATE = '/home/featurize/work/RAI2project/RAI2result'
+
+# directory to save data, results and weight files Noise and another
+CHECKPOINT_PATH_NOISE = '/home/featurize/work/RAI2project/RAI2checkpoint'
+DATA_PATH_NOISE = '/home/featurize/work/RAI2project/RAI2data'
+RESULT_PATH_NOISE = '/home/featurize/work/RAI2project/RAI2result'
+
+CHECKPOINT_PATH_BRIGHTNESS = '/home/featurize/work/RAI2project/RAI2checkpoint/brightness_similarity/cifar10/vgg13'
+DATA_PATH_BRIGHTNESS = '/home/featurize/work/RAI2project/RAI2data'
+RESULT_PATH_BRIGHTNESS = '/home/featurize/work/RAI2project/RAI2result'
+
+CHECKPOINT_PATH_SHEAR = '/home/featurize/work/RAI2project/RAI2checkpoint/shear_similarity/cifar10/vgg13'
+DATA_PATH_SHEAR = '/home/featurize/work/RAI2project/RAI2data'
+RESULT_PATH_SHEAR = '/home/featurize/work/RAI2project/RAI2result'
+
 CASE_STUDY_CHECKPOINT_PATH = os.path.join(CHECKPOINT_PATH, 'case_study')
 CASE_STUDY_RESULT_PATH = os.path.join(RESULT_PATH, 'case_study')
 

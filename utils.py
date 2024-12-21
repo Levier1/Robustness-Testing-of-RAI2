@@ -17,6 +17,7 @@ import torchvision.datasets as datasets
 from torch.utils.data import Dataset
 from torch.utils.data import DataLoader
 from tqdm import tqdm
+from torchvision.models import vgg11_bn
 import pickle
 from PIL import Image
 
@@ -163,7 +164,7 @@ class SubTrainDataset(Dataset):
         # doing this so that it is consistent with all other datasets
         # to return a PIL Image
         # TODO: unify the following line, in case study, the below line does not exist.
-        # img = Image.fromarray(img)
+        img = Image.fromarray(img)
 
         if self.transform is not None:
             img = self.transform(img)
@@ -173,6 +174,7 @@ class SubTrainDataset(Dataset):
 
         return img, target
     def __len__(self):
+
         return len(self.data)
 
 # methods for loading sub-datasets of CIFAR-10/100 and Tiny-ImageNet
@@ -193,11 +195,10 @@ def get_dataset_mean_std(dataset):
         return settings.CIFAR100_TRAIN_MEAN, settings.CIFAR100_TRAIN_STD
     if dataset == 'tinyimagenet':
         return settings.TINYIMAGENET_TRAIN_MEAN, settings.TINYIMAGENET_TRAIN_STD
-        
+
+
 def get_intersection_mean_std_dict(dataset_name):
-    '''
-    get normalization mean and std for each intersections 0.0, 0.1, ..., 0.9, 1.0. used for evaluation.
-    '''
+    # get normalization mean and std for each intersections 0.0, 0.1, ..., 0.9, 1.0. used for evaluation.
     mean_std_dict = {}
     for s in (np.arange(11) / 10):
         Set1, Set2 = pickle.load(open(os.path.join(settings.DATA_PATH, f'similarity/{dataset_name.upper()}_intersect_{s}.pkl'), 'rb'))
@@ -206,6 +207,25 @@ def get_intersection_mean_std_dict(dataset_name):
         mean_std_dict['int{}'.format(s)] = (mean, std)
     mean_std_dict['vic'] = mean_std_dict['int1.0']
     return mean_std_dict
+
+
+
+# 先用简单的配合Test_accuracy的测试
+def get_intersection_mean_std(dataset_name, inter_propor):
+    # 根据传入的单一交集比例 (inter_propor) 获取该比例下的数据集的均值和标准差。
+    # 构建文件路径，使用传入的比例值
+    file_path = os.path.join(settings.DATA_PATH,f'similarity/{dataset_name.upper()}_intersect_{inter_propor}.pkl')
+    # 检查文件是否存在，避免 FileNotFoundError
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"File not found: {file_path}")
+    # 加载对应比例的数据集
+    Set1, Set2 = pickle.load(open(file_path, 'rb'))
+    # 计算均值和标准差（数据归一化前的像素值除以 255）
+    mean = tuple((Set2[0] / 255).mean(axis=(0, 1, 2)))
+    std = tuple((Set2[0] / 255).std(axis=(0, 1, 2)))
+    # 返回该比例对应的均值和标准差
+    return mean, std
+
 
 def get_subtraining_dataloader_cifar10_intersect(propor=0.5, batch_size=16, num_workers=8, shuffle=True, sub_idx=1):
 
@@ -252,7 +272,7 @@ def get_subtraining_dataloader_cifar100_intersect(propor=0.5, batch_size=16, num
 
 def get_subtraining_dataloader_tinyimagenet_intersect(propor=0.5, batch_size=16, num_workers=8, shuffle=True, sub_idx=1):
 
-    X_set, y_set = pickle.load(open(os.path.join(settings.DATA_PATH, 'similarity/TINYIMAGENET_intersect_{propor}.pkl'), 'rb'))[sub_idx]
+    X_set, y_set = pickle.load(open(os.path.join(settings.DATA_PATH, f'similarity/TINYIMAGENET_intersect_{propor}.pkl'), 'rb'))[sub_idx]
     mean = tuple((X_set / 255).mean(axis=(0, 1, 2)))
     std = tuple((X_set / 255).std(axis=(0, 1, 2)))
     
@@ -345,7 +365,7 @@ def get_training_dataloader(dataset, mean, std, batch_size=16, num_workers=8, sh
         return get_training_dataloader_cifar10(mean=mean, std=std, batch_size=batch_size, num_workers=num_workers, shuffle=shuffle)
     if dataset == 'cifar100':
         return get_training_dataloader_cifar100(mean=mean, std=std, batch_size=batch_size, num_workers=num_workers, shuffle=shuffle)
-    if dataset == 'cifar10':
+    if dataset == 'tinyimagenet':
         return get_training_dataloader_tinyimagenet(mean=mean, std=std, batch_size=batch_size, num_workers=num_workers, shuffle=shuffle)
 
 
@@ -390,7 +410,7 @@ def get_test_dataloader_tinyimagenet(mean, std, batch_size=16, num_workers=8, sh
         transforms.ToTensor(),
         transforms.Normalize(mean, std)
     ])
-    X_set, y_set = pickle.load(open(os.path.join(settings.DATA_PATH, 'TinyImagenet_test.pkl'), 'rb'))
+    X_set, y_set = pickle.load(open(os.path.join(settings.DATA_PATH,'similarity','TinyImagenet_test.pkl'), 'rb'))
     tinyimagenet_test = SubTrainDataset(X_set, list(y_set), transform=transform_test)
     tinyimagenet_test_loader = DataLoader(
         tinyimagenet_test, shuffle=shuffle, num_workers=num_workers, batch_size=batch_size, pin_memory=pin_memory)
@@ -552,9 +572,6 @@ def get_network_cifar(netname, gpu, num_classes):
     elif netname == 'vgg13':
         from models.vgg import vgg13_bn
         net = vgg13_bn(num_classes=num_classes)
-    elif netname == 'vgg11':
-        from models.vgg import vgg11_bn
-        net = vgg11_bn(num_classes=num_classes)
     elif netname == 'vgg19':
         from models.vgg import vgg19_bn
         net = vgg19_bn(num_classes=num_classes)
@@ -595,6 +612,17 @@ def get_network_torchvision(netname, gpu, num_classes):
     if netname == 'wideresnet101':
         from torchvision.models import wide_resnet101_2
         net = wide_resnet101_2(num_classes=num_classes)
+    # 修改原tinyimagenet数据集下 受害者的模型架构以节省时间 因此在这里导入torchvision版本的vgg11模型架构用于训练
+    elif netname == 'vgg11':
+        # 使用 torchvision 提供的 vgg11_bn 模型
+        net = vgg11_bn(weights=None)  # 如果需要预训练权重，将 pretrained 设置为 True
+        # 修改全连接层的输出大小为200以适应tinyimagenet200数据集
+        net.classifier[6] = nn.Linear(net.classifier[6].in_features, 200)
+    elif netname == 'vgg16':
+        # 使用 torchvision 提供的 vgg16_bn 模型
+        net = vgg16_bn(weights=None)
+        # 修改全连接层的输出大小为200以适应tinyimagenet数据集
+        net.classifier[6] = nn.Linear(net.classifier[6].in_features, 200)
     elif netname == 'densenet121':
         from torchvision.models import densenet121
         net = densenet121(num_classes=num_classes)
