@@ -1,95 +1,73 @@
 <<<<<<< HEAD
-# $\text{RAI}^2$ : Responsible Identity Audit Governing the Artificial Intelligence
+# $Robustness Testing:$ Vulnerability Mining for the RAI2 Auditing Framework
 
-This repository contains code for reproducing the results of our NDSS'23 paper "RAI2 : Responsible Identity Audit Governing the Artificial Intelligence"
-(based on the popular Pytorch [implementation](https://github.com/kuangliu/pytorch-cifar)). The code contains scripts to train the models and Jupyter notebooks to generate tables and figures.
+This repository is dedicated to open-sourcing the experimental code for the vulnerability mining (attack scenarios) 
+of the auditing framework proposed in our NDSS'23 paper, *"RAI2: Responsible Identity Audit Governing the Artificial 
+Intelligence"* in terms of model ownership protection. If you find our open-source code helpful, please give us a star, thank you! The specific workflow will be provided below.
 
-Remember to cite if you find our repo useful :)
-
-*Note:* The repo may not be bug-free as I tried to integrate multiple components into one repository, so there can be errors like "missing varaible". If you are only interested in the algorithm implementation, it will be easier to check out the notebooks.
-
-```latex
-@inproceedings{dong2023rai2,
-    author={Tian Dong and Shaofeng Li and Guoxing Chen and Minhui Xue and Haojin Zhu and Zhen Liu},
-    title={{RAI2:} Responsible Identity Audit Governing the Artificial Intelligence},
-    booktitle = {30th Annual Network and Distributed System Security Symposium, {NDSS} 2023},
-    publisher = {The Internet Society},
-    year={2023}
-}
-```
 
 
 ## Environment setting
 
-The code is tested on Python 3.10.8, Pytorch 1.13.0, CUDA 11.8.
+The code is tested on Python 3.10.12, Pytorch 2.0.1, CUDA 11.8.
 The packages used in our project is provided in ```requirements.txt``` for reference.
 
 
 ## File and Folder Description
 
 - `conf/global_settings.py`: parameters used for all scripts include paths of data and model, etc.
-- `models/`: model architecture files.
-- `dataset_preparation/`: jupyter notebooks for preprocess datasets.
+- `models/`: model architecture files,this part of the work has not been developed yet.
+- `dataset_preparation/`: jupyter notebooks for preprocess datasets,We constructed five types of dataset reconstruction transformations for subsequent evaluation.
 - `dataset_similarity/`: notebooks for reproduce the results of dataset similarity estimation.
-- `case_study/`: notebooks and scripts for results of the tiny case study on facial attribute classification.
-- `model_similarity`: notebooks for reproduce the results of model similarity estimation.
-- `train_cv.py`: script to train models on CIFAR-10/100 and Tiny-ImageNet.
-- `train_facial.py`: script to train models on facial attribute datasets (UTKFace and FairFace). The models trained are used in the case study.
-- `train_nlp.py`: script to finetune BERT-based language models.
-- `utils.py`: script containing auxillary functions like data loading, network initialization and training, etc.
+- `model_similarity`: notebooks for reproduce the results of model similarity estimation,this part of the work has not been developed yet.
+- `train_cv.py`: script to train models on CIFAR-10/100 and Tiny-ImageNet,each file corresponds to a type of reconstruction transformation to maintain parallelism in the experiments.
+- `utils.py`: script containing auxillary functions like data loading, network initialization and training, etc.each file corresponds to a type of reconstruction transformation to maintain parallelism in the experiments.
 
-## Preparation
+### Workflow Introduction:
 
+1. **Set Global Paths**  
+   First, please modify variables in the format of `{}_PATH` in `conf/global_settings.py` to specify the storage locations for your models and data. Here, we also set up multiple global paths in a parallel structure, which improves efficiency and provides a clearer structure during the preparation of data and training of models.
 
+2. **Dataset Preparation**  
+   Use the `CIFARSplitData.ipynb` and `TinyImagenetSplitData.ipynb` notebooks in the `dataset_preparation` directory to split the CIFAR-10/CIFAR-100 and TinyImagenet-200 datasets. This step mainly involves pre-constructing the subsets `subset_1` and `subset_2` for the roles of the victim and the attacker.
 
-First, please modify variables in format of `{}_PATH` in `conf/global_settings.py` to set storing location of your models and data.
+3. **Constructing Attack Datasets**  
+   Use the `DataSimilarityNBS.ipynb` notebook in the `dataset_preparation` directory to create datasets used by attackers after stealing data under corresponding attack methods. In this step, the code allows you to simulate the intensity of attacks by adjusting the proportions of datasets and the transformation strength.
 
+4. **Training Surrogate Models**  
+   Train surrogate models for attackers under different datasets and attack methods using the following scripts:
+   - `train_cv.py` 
+   - `train_cvnoise.py`
+   - `train_cvshear.py`
+   - `train_cvbrightness.py`
+   - `train_cvtranslate.py`
 
-### Dataset preparation
+Each file corresponds to a type of dataset reconstruction attack.
 
-For CIFAR-10/100 and Tiny-ImageNet, check `DatasetSimilarity.ipynb` to obtain intersected datasets. The files should be in format of `{dataset}_intersect_{similarity}.pkl` (e.g. CIFAR10_intersect_0.7, CIFAR10_intersect_0.8).
+   To run the scripts, refer to the parameter descriptions provided in them. Here is an example:
+   ```bash
+   python train_cv.py -net resnet18 -dataset cifar10 -subset 1 -inter_propor 0.0 -copy_id 0 -gpu_id 0   victim
+   python train_cv.py -net vgg13 -dataset cifar10 -subset 2 -inter_propor 0.0 -copy_id 0 -gpu_id 0     attacker
+   ```
 
-For facial data, you can download [FairFace](https://github.com/dchen236/FairFace) and [UTKFace](https://susanqq.github.io/UTKFace/) or directly use our pre-processed [dataset](https://drive.google.com/file/d/1kf13W76Yg53zSolhQ60nhilsEJguTh97/view?usp=sharing) in format of .pkl (list of raw data and labels).
+   The training settings and hyperparameters for surrogate models are exactly the same as those used in the RAI2 work. The purpose of this is to control variables and ensure a consistent basis for subsequent robustness evaluations.
 
-Then, run `ProcessFacialAttribute.ipynb` to obtain .pkl files.
-*Note:* The step is to accelerate data loading during training. It is ok to integrate this part into training scripts.
+5. **Evaluating Model Accuracy**  
+   After training the surrogate models, use the `evaluate_accuracy.py` script to infer Top-1 and Top-5 model accuracies. This ensures that the attacker does not lose their motivation to launch attacks or pay an unacceptable cost for the attacks.
 
+6. **Experimental Data Analysis**  
+   Use the scripts in the `dataset_similarity` directory to analyze the experimental data. Among them:
+   - The script `similarity_cv_predict.py` generates model outputs as intermediate results to facilitate faster result analysis in notebooks.
+   - The main analysis is done in the `InferSimilarity.ipynb` notebook.
 
-### Model preparation
-Run `train_cv.py`, `train_facial.py` or `'train_nlp.py` to obtain tested and surrogate models.
-The parameter description are provided in scripts. 
+   For analyzing the data, the evaluation metrics, methods, and parameter settings strictly follow those used in the RAI2 experimental work. The goal is to 100% replicate their methodology and control variables for consistency.
 
-Here are some examples:
+---
 
-```
-python train_cv.py -net resnet18 -dataset cifar10 -subset 1 -inter_propor 0.2  -copy_id 0 -gpu_id 0
+### Additional Information:
 
-python train_facial.py -net regnet_y_8gf -inter_propor 0.1 -copy_id 1
-
-python train_nlp.py -inter_propor 0.3 -save_path int0.3 -archi mini
-```
-
-*Note*: Before running the notebooks, it is necessary to prepare the both victim's, surrogate and adversary models with the scripts and well organize the models into correct folders (and with correct file name).
-
-## Similarity Estimation
-
-### Dataset
-The notebooks are under folder `dataset_similarity/`.
-The scripts `similarity_cv_predict.py` generates model outputs as intermediate results for faster result analysis in notebooks.
-The analysis notebook is in `InferSimilarity.ipynb`.
-`ablation_similarity_model_predict.py` generates intermediate results for adversary's different learning rate and training epochs.
-The analysis notebook is `AblationStudy.ipynb`.
-
-For text classification, the notebook `NLPDatasimilarity.ipynb` takes care of intermediate results and final analysis.
-
-Similarly, under `case_study/`, the script `similarity_facial_predict.py` outputs intermediate results and `SimilarityEstimation.ipynb` outputs final results.
-
-### Model
-
-Under `model_similarity/`, the folder `Quantization/` contains notebooks to quantize the models (ResNet-18, VGG-16 and MobileNet).
-The notebooks starting with `ModelHash_` contains code for detection of different model modifications.
-
-=======
+If you are not familiar with the auditing mechanism proposed in the RAI2 work, please refer to the paper:  
+**"Dong T, Li S, Chen G, et al. RAI2: Responsible Identity Audit Governing the Artificial Intelligence [C] // NDSS. 2023."**  
+or the source code of their work: [https://github.com/chichidd/RAI2.git](https://github.com/chichidd/RAI2.git).
 # Robustness-Testing-of-RAI2
-针对RAI2工作的漏洞挖掘
->>>>>>> 0bcecd372cade24a950f422c6fabbc8085bddb72
+>>>>>>> 
