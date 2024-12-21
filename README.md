@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # $\text{RAI}^2$ : Responsible Identity Audit Governing the Artificial Intelligence
 
 This repository contains code for reproducing the results of our NDSS'23 paper "RAI2 : Responsible Identity Audit Governing the Artificial Intelligence"
@@ -88,3 +89,7 @@ Similarly, under `case_study/`, the script `similarity_facial_predict.py` output
 Under `model_similarity/`, the folder `Quantization/` contains notebooks to quantize the models (ResNet-18, VGG-16 and MobileNet).
 The notebooks starting with `ModelHash_` contains code for detection of different model modifications.
 
+=======
+# Robustness-Testing-of-RAI2
+针对RAI2工作的漏洞挖掘
+>>>>>>> 0bcecd372cade24a950f422c6fabbc8085bddb72

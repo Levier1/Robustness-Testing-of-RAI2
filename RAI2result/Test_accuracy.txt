@@ -1,0 +1,72 @@
+CIFAR-10:
+Intersection int0.0 - Victim Model (resnet34) Accuracy: Top-1: 0.694599986076355%, Top-5: 0.8955000042915344%
+Intersection int0.0 - Attacker Model (resnet101) Accuracy: Top-1: 0.7202000021934509%, Top-5: 0.910099983215332%
+Intersection int0.1 - Victim Model (resnet34) Accuracy: Top-1: 0.6858000159263611%, Top-5: 0.8895999789237976%
+Intersection int0.1 - Attacker Model (resnet101) Accuracy: Top-1: 0.7023000121116638%, Top-5: 0.904699981212616%
+Intersection int0.2 - Victim Model (resnet34) Accuracy: Top-1: 0.6897000074386597%, Top-5: 0.8931000232696533%
+Intersection int0.2 - Attacker Model (resnet101) Accuracy: Top-1: 0.7092999815940857%, Top-5: 0.9075999855995178%
+Intersection int0.3 - Victim Model (resnet34) Accuracy: Top-1: 0.690500020980835%, Top-5: 0.8925999999046326%
+Intersection int0.3 - Attacker Model (resnet101) Accuracy: Top-1: 0.6998000144958496%, Top-5: 0.9060999751091003%
+Intersection int0.4 - Victim Model (resnet34) Accuracy: Top-1: 0.6916999816894531%, Top-5: 0.8973000049591064%
+Intersection int0.4 - Attacker Model (resnet101) Accuracy: Top-1: 0.711899995803833%, Top-5: 0.9085999727249146%
+Intersection int0.5 - Victim Model (resnet34) Accuracy: Top-1: 0.694100022315979%, Top-5: 0.892799973487854%
+Intersection int0.5 - Attacker Model (resnet101) Accuracy: Top-1: 0.7156999707221985%, Top-5: 0.9106000065803528%
+Intersection int0.6 - Victim Model (resnet34) Accuracy: Top-1: 0.6974999904632568%, Top-5: 0.896399974822998%
+Intersection int0.6 - Attacker Model (resnet101) Accuracy: Top-1: 0.7123000025749207%, Top-5: 0.9114000201225281%
+Intersection int0.7 - Victim Model (resnet34) Accuracy: Top-1: 0.6956999897956848%, Top-5: 0.8999000191688538%
+Intersection int0.7 - Attacker Model (resnet101) Accuracy: Top-1: 0.7045999765396118%, Top-5: 0.9063000082969666%
+Intersection int0.8 - Victim Model (resnet34) Accuracy: Top-1: 0.6959999799728394%, Top-5: 0.8945000171661377%
+Intersection int0.8 - Attacker Model (resnet101) Accuracy: Top-1: 0.7070000171661377%, Top-5: 0.9082000255584717%
+Intersection int0.9 - Victim Model (resnet34) Accuracy: Top-1: 0.695900022983551%, Top-5: 0.8977000117301941%
+Intersection int0.9 - Attacker Model (resnet101) Accuracy: Top-1: 0.7114999890327454%, Top-5: 0.9059000015258789%
+Intersection int1.0 - Victim Model (resnet34) Accuracy: Top-1: 0.6868000030517578%, Top-5: 0.8931000232696533%
+Intersection int1.0 - Attacker Model (resnet101) Accuracy: Top-1: 0.7045999765396118%, Top-5: 0.9064000248908997%
+
+CIFAR-100:
+Intersection int0.0 - Victim Model:resnet18 Accuracy: Top-1: 0.9205999970436096%, Top-5: 0.9969000220298767%
+Intersection int0.0 - Attacker Model:vgg13 Accuracy: Top-1: 0.9031000137329102%, Top-5: 0.9962000250816345%
+Intersection int0.1 - Victim Model:resnet18 Accuracy: Top-1: 0.9203000068664551%, Top-5: 0.9972000122070312%
+Intersection int0.1 - Attacker Model:vgg13 Accuracy: Top-1: 0.9031999707221985%, Top-5: 0.9965000152587891%
+Intersection int0.2 - Victim Model:resnet18 Accuracy: Top-1: 0.9182999730110168%, Top-5: 0.9969000220298767%
+Intersection int0.2 - Attacker Model:vgg13 Accuracy: Top-1: 0.9031000137329102%, Top-5: 0.9958000183105469%
+Intersection int0.3 - Victim Model:resnet18 Accuracy: Top-1: 0.919700026512146%, Top-5: 0.9972000122070312%
+Intersection int0.3 - Attacker Model:vgg13 Accuracy: Top-1: 0.9021999835968018%, Top-5: 0.9965000152587891%
+Intersection int0.4 - Victim Model:resnet18 Accuracy: Top-1: 0.9193999767303467%, Top-5: 0.996999979019165%
+Intersection int0.4 - Attacker Model:vgg13 Accuracy: Top-1: 0.9039000272750854%, Top-5: 0.9962999820709229%
+Intersection int0.5 - Victim Model:resnet18 Accuracy: Top-1: 0.9168999791145325%, Top-5: 0.9961000084877014%
+Intersection int0.5 - Attacker Model:vgg13 Accuracy: Top-1: 0.9010999798774719%, Top-5: 0.9962999820709229%
+Intersection int0.6 - Victim Model:resnet18 Accuracy: Top-1: 0.9214000105857849%, Top-5: 0.9975000023841858%
+Intersection int0.6 - Attacker Model:vgg13 Accuracy: Top-1: 0.9003999829292297%, Top-5: 0.9955999851226807%
+Intersection int0.7 - Victim Model:resnet18 Accuracy: Top-1: 0.9171000123023987%, Top-5: 0.996399998664856%
+Intersection int0.7 - Attacker Model:vgg13 Accuracy: Top-1: 0.9010000228881836%, Top-5: 0.996999979019165%
+Intersection int0.8 - Victim Model:resnet18 Accuracy: Top-1: 0.9222000241279602%, Top-5: 0.9968000054359436%
+Intersection int0.8 - Attacker Model:vgg13 Accuracy: Top-1: 0.9010999798774719%, Top-5: 0.9962000250816345%
+Intersection int0.9 - Victim Model:resnet18 Accuracy: Top-1: 0.9187999963760376%, Top-5: 0.9966999888420105%
+Intersection int0.9 - Attacker Model:vgg13 Accuracy: Top-1: 0.9014999866485596%, Top-5: 0.9969000220298767%
+Intersection int1.0 - Victim Model:resnet18 Accuracy: Top-1: 0.9203000068664551%, Top-5: 0.9976999759674072%
+Intersection int1.0 - Attacker Model:vgg13 Accuracy: Top-1: 0.9035000205039978%, Top-5: 0.9950000047683716%
+
+Tiny-Imagenet：
+Intersection int0.0 - Victim Model:vgg11 Accuracy: Top-1: 0.48510000109672546%, Top-5: 0.7160000205039978%
+Intersection int0.0 - Attacker Model:vgg19 Accuracy: Top-1: 0.5126000046730042%, Top-5: 0.7246000170707703%
+Intersection int0.1 - Victim Model:vgg11 Accuracy: Top-1: 0.4771000146865845%, Top-5: 0.7093999981880188%
+Intersection int0.1 - Attacker Model:vgg19 Accuracy: Top-1: 0.508899986743927%, Top-5: 0.7282000184059143%
+Intersection int0.2 - Victim Model:vgg11 Accuracy: Top-1: 0.4839000105857849%, Top-5: 0.7124000191688538%
+Intersection int0.2 - Attacker Model:vgg19 Accuracy: Top-1: 0.5134000182151794%, Top-5: 0.7339000105857849%
+Intersection int0.3 - Victim Model:vgg11 Accuracy: Top-1: 0.482699990272522%, Top-5: 0.7131999731063843%
+Intersection int0.3 - Attacker Model:vgg19 Accuracy: Top-1: 0.5130000114440918%, Top-5: 0.722000002861023%
+Intersection int0.4 - Victim Model:vgg11 Accuracy: Top-1: 0.4821000099182129%, Top-5: 0.7114999890327454%
+Intersection int0.4 - Attacker Model:vgg19 Accuracy: Top-1: 0.5092999935150146%, Top-5: 0.7261000275611877%
+Intersection int0.5 - Victim Model:vgg11 Accuracy: Top-1: 0.48510000109672546%, Top-5: 0.711899995803833%
+Intersection int0.5 - Attacker Model:vgg19 Accuracy: Top-1: 0.5113000273704529%, Top-5: 0.7257000207901001%
+Intersection int0.6 - Victim Model:vgg11 Accuracy: Top-1: 0.48510000109672546%, Top-5: 0.7182999849319458%
+Intersection int0.6 - Attacker Model:vgg19 Accuracy: Top-1: 0.5058000087738037%, Top-5: 0.7390999794006348%
+Intersection int0.7 - Victim Model:vgg11 Accuracy: Top-1: 0.48579999804496765%, Top-5: 0.7178999781608582%
+Intersection int0.7 - Attacker Model:vgg19 Accuracy: Top-1: 0.5101000070571899%, Top-5: 0.7246000170707703%
+Intersection int0.8 - Victim Model:vgg11 Accuracy: Top-1: 0.48730000853538513%, Top-5: 0.7156999707221985%
+Intersection int0.8 - Attacker Model:vgg19 Accuracy: Top-1: 0.5128999948501587%, Top-5: 0.7246000170707703%
+Intersection int0.9 - Victim Model:vgg11 Accuracy: Top-1: 0.4887999892234802%, Top-5: 0.7089999914169312%
+Intersection int0.9 - Attacker Model:vgg19 Accuracy: Top-1: 0.5163000226020813%, Top-5: 0.7279000282287598%
+Intersection int1.0 - Victim Model:vgg11 Accuracy: Top-1: 0.4837999939918518%, Top-5: 0.7129999995231628%
+Intersection int1.0 - Attacker Model:vgg19 Accuracy: Top-1: 0.5174000263214111%, Top-5: 0.7328000068664551%
+
