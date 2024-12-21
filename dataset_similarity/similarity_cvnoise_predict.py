@@ -11,7 +11,7 @@ import sys
 sys.path.append("../")
 import utils
 from conf import settings
-COPY_NUM = 5
+COPY_NUM = 10
 
 np.random.seed(0)
 torch.manual_seed(0)
