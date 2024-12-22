@@ -1,7 +1,7 @@
 <<<<<<< HEAD
 # $Robustness Testing:$ Vulnerability Mining for the RAI2 Auditing Framework
 
-This repository is dedicated to open-sourcing the experimental code for the vulnerability mining (attack scenarios) 
+This repository is dedicated to open-sourcing the experimental code for the Dataset Reconstruction Attack Scenarios(DRAS)
 of the auditing framework proposed in our NDSS'23 paper, *"RAI2: Responsible Identity Audit Governing the Artificial 
 Intelligence"* in terms of model ownership protection. If you find our open-source code helpful, please give us a star, thank you! The specific workflow will be provided below.
 
